@@ -7,7 +7,6 @@ import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -89,15 +88,12 @@ public class MainActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View view) {
-                DecimalFormat decimalFormat =new DecimalFormat("#.0");
+                DecimalFormat decimalFormat = new DecimalFormat("#.0");
                 if (!enteredFirstGrade.getText().toString().equals("")) {
                     enteredValue = Double.parseDouble(enteredFirstGrade.getText().toString());
                     firstGradeResult = (enteredValue / 100) * seekPerVize;
-
                     firstResult.setText("İlk sınav oranın " + String.valueOf(decimalFormat.format(firstGradeResult)));
-
-                }
-                if (!enteredSecondGrade.getText().toString().equals("")) {
+                }if (!enteredSecondGrade.getText().toString().equals("")) {
                     enteredValue = Double.parseDouble(enteredSecondGrade.getText().toString());
                     secondGradeResult = (enteredValue / 100) * seekPerFinal;
 
@@ -105,20 +101,27 @@ public class MainActivity extends AppCompatActivity {
 
                 } else {
                     Toast.makeText(MainActivity.this, "Sayı giriniz", Toast.LENGTH_SHORT).show();
-                }
-                if (!enteredFirstGrade.getText().toString().equals("") || !enteredSecondGrade.getText().toString().equals("")) {
+                }if (!enteredFirstGrade.getText().toString().equals("") || !enteredSecondGrade.getText().toString().equals("")) {
                     sumResult = firstGradeResult + secondGradeResult;
-
-                    calculateResult.setText("Sınav sonuçlarının toplamı: " + String.valueOf(sumResult));
-                    barrageResult=Double.parseDouble(barrage.getText().toString());
-                    if(sumResult>=barrageResult){
-                        calculateResult.setText(String.valueOf(sumResult)+" Dersten geçtin. TEBRİKLER!");
-                    }else {
-                        calculateResult.setText(String.valueOf(sumResult)+" Maalesef geçme notunun altında.");
+                    if (barrage.getText().toString().equals("")) {
+                        Toast.makeText(MainActivity.this, "Baraj puanı girilmeden başarı hesaplanmıyor.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        calculateResult.setText("Sınav sonuçlarının toplamı: " + String.valueOf(decimalFormat.format(sumResult)));
+                        barrageResult = Double.parseDouble(barrage.getText().toString());
+                        if (sumResult >= barrageResult) {
+                            calculateResult.setText(String.valueOf(decimalFormat.format(sumResult)) + " Dersten geçtin. TEBRİKLER!");
+                        } else {
+                            calculateResult.setText(String.valueOf(decimalFormat.format(sumResult)) + " Maalesef geçme notunun altında.");
+                        }
                     }
+                }else{
+                    sumResult=0.0;
+                    secondGradeResult=0.0;
+                    firstResult.setText("İlk sınav oranın " + String.valueOf(decimalFormat.format(firstGradeResult)));
                 }
             }
         });
+
     }
 
     public void customVisual() {
